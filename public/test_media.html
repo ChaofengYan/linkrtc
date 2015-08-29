@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="RTCat.media.js"></script>
+<style type="text/css">
+#container{
+	width:600px;
+	height:400px;
+	}
+video{
+	background-color:#009933}
+	#me video{
+		background-color:red;
+		width:100%;
+		height:100%}
+		
+		#videos{
+			position:relative;
+			width:100%;
+			height:100%;
+			border:1px solid black}
+			#you{
+			
+			width:100%;
+			height:100%}
+</style>
+</head>
+
+<body>
+<div id="container"></div>
+</body>
+<script type="text/javascript">
+$(function(){
+	//var RTCat = {};
+	RTCat.media.initModule($("#container"));
+	
+	})
+</script>
+</html>

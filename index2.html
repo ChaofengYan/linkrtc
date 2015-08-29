@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SkyRTC聊天室Demo</title>
+    <style type="text/css">
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        
+        #videos {
+            position: absolute;
+            left: 30%;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            overflow: auto;
+        }
+        
+        #videos video {
+            display: inline-block;
+            width: 32%;
+        }
+        
+        #chat {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            border: 1px solid #0f0f0f;
+        }
+        
+        #chat .msgIpt,
+        #chat .fileIpt {
+            position: absolute;
+            left: 0;
+            width: 80%;
+        }
+        
+        #chat .sendBtn,
+        #chat .sendFileBtn {
+            position: absolute;
+            left: 80%;
+            width: 20%;
+        }
+        
+        #chat .msgIpt,
+        #chat .sendBtn {
+            bottom: 0;
+        }
+        
+        #chat .fileIpt,
+        #chat .sendFileBtn {
+            bottom: 30px;
+        }
+        
+        #chat .msgs {
+            padding: 5%;
+        }
+        
+        #chat .msgs p {
+            margin: 0.3em 0;
+        }
+        
+        #files {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20%;
+        }
+        
+        #files .name {}
+        
+        #files .percent {
+            font-weight: bold;
+            text-decoration: none
+        }
+
+        #cover {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat">
+        <div class="msgs" id="msgs"></div>
+        <input type="file" id="fileIpt" class="fileIpt">
+        <button id="sendFileBtn" class="sendFileBtn">发送文件</button>
+        <input type="text" id="msgIpt" class="msgIpt">
+        <button id="sendBtn" class="sendBtn">发送</button>
+        <button id="creatcanvas" >画图</button>
+    </div>
+    <div id="videos">
+        <video id="me" autoplay></video>
+    </div>
+    <div id="files">
+    </div>
+
+    
+    <div id='cover'>
+    <canvas id="myCanvas" style=' margin: 0; padding: 0; display: block;background: #fff;'>你的浏览器要升级了！</canvas>
+<div class="tools" style="right:0; ">
+    <div class="btn-group dropup">
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+            <span id="bitou" style="background: #f0f; border-radius: 50%; width: 10px; height: 10px; display: inline-block;"></span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            <li class="t_bitou"> &nbsp;<bottom onclick="set_bitou(1,this)" title="画笔" class="active"><span class="glyphicon glyphicon-pencil"></span></bottom> <bottom onclick="set_bitou(2,this)" title="橡皮擦"><span class="glyphicon glyphicon-unchecked"></span></bottom> <bottom onclick="set_bitou(3,this)" title="清空画板"><span class="glyphicon glyphicon-trash"></span></bottom> <bottom onclick="set_bitou(4,this)" title="保存"><span class="glyphicon glyphicon-floppy-disk"></span></bottom></li>
+            <li class="divider"></li>
+            <li class="t_yanse"> &nbsp;<bottom style="background: #000;" onclick="set_yscx('#000');"></bottom> <bottom style="background: #7f7f7f;" onclick="set_yscx('#7f7f7f');"></bottom> <bottom style="background: #880015;" onclick="set_yscx('#880015');"></bottom> <bottom style="background: #ed1c24;" onclick="set_yscx('#ed1c24');"></bottom></li>
+            <li class="t_yanse"> &nbsp;<bottom style="background: #ff7f27;" onclick="set_yscx('#ff7f27');"></bottom> <bottom style="background: #fff200;" onclick="set_yscx('#fff200');"></bottom> <bottom style="background: #22b14c;" onclick="set_yscx('#22b14c');"></bottom> <bottom style="background: #00a2e8;" onclick="set_yscx('#00a2e8');"></bottom></li>
+            <li class="t_yanse"> &nbsp;<bottom style="background: #3f48cc;" onclick="set_yscx('#3f48cc');"></bottom> <bottom style="background: #a349a4;" onclick="set_yscx('#a349a4');"></bottom> <bottom style="background: #b97a57;" onclick="set_yscx('#b97a57');"></bottom> <bottom style="background: #b5e61d;" onclick="set_yscx('#b5e61d');"></bottom></li>
+            <li class="t_yanse">
+                &nbsp;<bottom id="colorpickerbnt" style="width: 148px; font-size: 20px;color: #fff;" onclick="ste_colorpicker(yanse);">
+                <span class="glyphicon glyphicon-screenshot"></span></bottom>
+            </li>
+            <li class="divider"></li>
+            <li class="t_bihua"> &nbsp;<bottom onclick="set_yscx('',4,this);">特细</bottom> <bottom onclick="set_yscx('',6,this);">细</bottom>
+                <bottom onclick="set_yscx('',10,this);">粗</bottom>
+                <bottom onclick="set_yscx('',20,this);">特粗</bottom> </li>
+        </ul>
+    </div>
+
+
+</div>
+
+
+<div id="msgbox" class="tools" style="height: 30px;  width: 100%; overflow: hidden; line-height: 15px; padding: 0 25%; font-size: 12px;text-shadow:1px 1px 0px rgba(255,255,128,0.8);pointer-events:none;">
+    <p></p>
+</div>
+
+<div id="fk_container">
+    <div id='colorpicker' style="background: #ededed; width: 195px; height: 195px; display: inline-block;"></div>
+    <button id='colorbutton' type="button" class="btn btn-primary">确定</button>
+</div>
+
+    </div>
+</body>
+<script type="text/javascript" src="/jquery.min.js"></script>
+<script type="text/javascript" src="/RTCat.js"></script>
+<script type="text/javascript" src="/RTCat.socket.js"></script>
+<script type="text/javascript" src="/RTCat.p2p.js"></script>
+<script type="text/javascript" src="/RTCat.model.js"></script>
+<script type="text/javascript" src="/RTCat.shell.js"></script>
+<script type="text/javascript">
+
+
+    var videos = document.getElementById("videos");
+    var sendBtn = document.getElementById("sendBtn");
+    var msgs = document.getElementById("msgs");
+    var sendFileBtn = document.getElementById("sendFileBtn");
+    var files = document.getElementById("files");
+
+    $(function() {
+        RTCat.initModule();
+
+
+        $('#creatcanvas').click(function(){
+            $('#cover').show();
+        })
+        
+    })
+
+    /**********************************************************/
+    sendBtn.onclick = function(event) {
+        var msgIpt = document.getElementById("msgIpt"),
+            msg = msgIpt.value,
+            p = document.createElement("p");
+        p.appendChild(document.createTextNode("me: " + msg));
+        //p.innerText = "me: " + msg;
+        //广播消息
+        //RTCat.p2p.send('all', msg);
+        RTCat.p2p.send('all', JSON.stringify({
+            type: "__msg",
+            data: msg
+        }));
+        msgIpt.value = "";
+        msgs.appendChild(p);
+    };
+
+    sendFileBtn.onclick = function(event) {
+        //分享文件
+        RTCat.model.file.shareFile("fileIpt");
+    };
+    /**********************************************************/
+
+</script>
+
+</html>

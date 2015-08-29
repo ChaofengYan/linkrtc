@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="RTCat.dialogue.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<link href="bootstrap.min.css" rel="stylesheet">
+<link href="bootstrap-theme.min.css" rel="stylesheet">
+
+
+<style type="text/css">
+#container{
+	width:600px;
+	height:400px;
+	}
+
+</style>
+</head>
+
+<body>
+<div id="container"></div>
+</body>
+<script type="text/javascript">
+$(function(){
+	RTCat.dialogue.initModule($("#container"));	
+	})
+</script>
+</html>
